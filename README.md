@@ -1,3 +1,5 @@
+![](header.png) 
+
 # Red Team Nightmare (AV Bypass)  :
 You made your way into an interactive box, where you need to use some privilege escalation techniques to gain system. This isn't a post about the various techniques, but it's about evading the anti-virus for your engagement (From going interactive to active).
 
