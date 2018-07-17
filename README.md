@@ -55,3 +55,4 @@ Just want to make another note that there is a difference between a regular Wind
 - **Windows Service EXE** is a Windows executable that responds to Service Control Manager commands. You may use this executable to create a Windows service with sc or as a custom executable with the Metasploit® Framework's PsExec modules.
 
 ---
+![](virustotal_results.png) 
