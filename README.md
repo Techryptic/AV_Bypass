@@ -5,7 +5,7 @@ The usual top applications would be veil-framework or cobalt-strike. The issue w
 
 My goal wasn't to get 0/64 on virustotal, but to bypass the top tier AV providers (Avast, ESET, Malwarebytes, McAfee, Sophos AV) and continue with our engagement. 
 
->==With the modifications done below, the service executable gets about **15/64** on virustotal, and also pass all of the top tier providers above.==
+>With the modifications done below, the service executable gets about **15/64** on virustotal, and also pass all of the top tier providers above.
 ---
 ### Breakdown:
 
